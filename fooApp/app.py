@@ -10,7 +10,7 @@ import json
 from flask_login import login_required
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'foodb'
-app.config['MONGO_URI'] = "mongodb://test:1234@clustertestads.3o3wz.mongodb.net/foodb"
+app.config['MONGO_URI'] = "mongodb+srv://test:1234@clustertestads.3o3wz.mongodb.net/foodb?retryWrites=true&w=majority"
 
 mongo = PyMongo(app)
 
