@@ -10,7 +10,7 @@ import json
 from flask_login import login_required
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'foodb'
-app.config['MONGO_URI'] = "mongodb+srv://test:1234@clustertestads.3o3wz.mongodb.net/foodb?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/foodb'
 
 mongo = PyMongo(app)
 
@@ -196,14 +196,13 @@ def product_edit(product_id):
   for item in items:
     name = item["name"]
     desc = item["description"]
-    price = item["price"]
+    price = float(item["price"])
   form = ProductForm(request.form)
   form.name.data = name
   form.description.data = desc
   form.price.data = price
   if request.method == 'POST' and form.validate():
-    print(request.form["name"], request.form["description"], request.form["price"])
-    mongo.db.products.replace_one(form.data, {"_id" : ObjectId(product_id), "name" : request.form["name"], "description" : request.form["description"], "price": request.form["price"]}, True)
+    mongo.db.products.replace_one({"_id" : ObjectId(product_id)}, {"_id" : ObjectId(product_id), "name" : request.form["name"], "description" : request.form["description"], "price": request.form["price"]}, True)
     # Success. Send user back to full product list.
     return redirect(url_for('products_list'))
   # Either first load or validation error at this point.
